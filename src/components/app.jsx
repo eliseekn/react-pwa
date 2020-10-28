@@ -23,6 +23,14 @@ class App extends React.Component {
 
     handleChange(e) {
         this.setState({ itemDescription: e.target.value })
+
+        if (e.target.value === '') {
+            this.setState({
+                itemId: '',
+                itemDescription: '',
+                actionText: 'Add item'
+            })
+        }
     }
 
     handleEdit(itemId, itemDescription) {
@@ -40,78 +48,51 @@ class App extends React.Component {
         }
 
         if (this.state.actionText === 'Add item') {
-            fetch('http://localhost:8080/create', {
-                method: 'POST',
-                body: JSON.stringify({ description: this.state.itemDescription })
-            })
-            .then(response => response.json())
-            .then(data => 
-                this.setState({ 
-                    items: data,
-                    itemDescription: ''
-                })
-            )
+            this.setState(state => ({
+                items: state.items.concat({
+                    id: this.state.items.length + 1,
+                    description: this.state.itemDescription
+                }),
+                itemDescription: ''
+            }))
         } else {
-            fetch('http://localhost:8080/update', {
-                method: 'PUT',
-                body: JSON.stringify({ id: this.state.itemId, description: this.state.itemDescription })
+            const items = this.state.items.map(item => {
+                if (item.id === this.state.itemId) {
+                    item.description = this.state.itemDescription
+                }
+    
+                return item
             })
-            .then(response => response.json())
-            .then(data => 
-                this.setState({ 
-                    items: data,
-                    itemId: '',
-                    itemDescription: '',
-                    actionText: 'Add item'
-                })
-            )
+    
+            this.setState({
+                items: items,
+                itemId: '',
+                itemDescription: '',
+                actionText: 'Add item'
+            })
         }
     }
 
-    handleDelete(itemId) {
-        fetch('http://localhost:8080/delete/' . itemId, {
-            method: 'DELETE'
-        })
-        .then(response => response.json())
-        .then(data => this.setState({ items: data }))
-    }
-
-    componentDidMount() {
-        fetch('http://localhost:8080/')
-            .then(response => response.json())
-            .then(data => this.setState({ items: data }));
-
-        /* this.setState({
-            items: [
-                {
-                    'id' : 1,
-                    'description': 'Intégrer les API de Orange Money, MTN Momo et Flooz'
-                },
-
-                {
-                    'id' : 2,
-                    'description': 'Démarrer un projet avec jhipster'
-                },
-            ]
-        }) */
+    handleDelete(id) {
+        this.setState(state => ({
+            items: state.items.filter(item => item.id !== id)
+        }))
     }
 
     render() {
         return (
             <div className="container my-5 px-5">
-                <h1 className="jumbotron text-center">Todo Items</h1>
+                <h1 className="jumbotron text-center">Todo App</h1>
 
-                <form className="mt-5 mb-3" onSubmit={this.handleSubmit}>
-                    <div className="form-row">
-                        <div className="form-group col-md-10">
-                            <input type="text" className="form-control" id="item" placeholder="Item description" value={this.state.itemDescription} onChange={this.handleChange} />
-                        </div>
-                        
-                        <div className="form-group col-md-2">
-                            <button className="btn btn-primary btn-block">{this.state.actionText}</button>
-                        </div>
+                <div className="form-row">
+                    <div className="form-group col-md-10">
+                        <input type="text" className="form-control" id="item" placeholder="Item description" value={this.state.itemDescription} onChange={this.handleChange} />
                     </div>
-                </form>
+                    
+                    <div className="form-group col-md-2">
+                        <button className="btn btn-primary btn-block" onClick={this.handleSubmit}>{this.state.actionText}</button>
+                    </div>
+                </div>
 
                 <Items
                     items={this.state.items}
