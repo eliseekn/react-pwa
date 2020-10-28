@@ -1,15 +1,15 @@
 {
     "short_name": "Todo App",
     "name": "Todo PWA with React.js",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "theme_color": "#000000",
+    "background_color": "#ffffff",
     "icons": [
         {
             "src": "/images/logo.png",
             "type": "image/png",
             "sizes": "1024x1024"
         }
-    ],
-    "start_url": ".",
-    "display": "standalone",
-    "theme_color": "#000000",
-    "background_color": "#ffffff"
+    ]
 }

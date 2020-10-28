@@ -13,13 +13,13 @@ const Item = (props) => {
     }
 
     return (
-        <li className="list-group-item d-flex align-items-center">
-            <span><i className="fa fa-dot-circle"></i> {props.description}</span>
+        <li className="list-group-item d-flex flex-md-row flex-column align-items-md-center">
+            <div className="mb-md-0 mb-2"><i className="fas fa-dot-circle"></i> {props.description}</div>
             
-            <span className="ml-auto">
-                <button className="btn btn-primary mx-3" onClick={handleEdit}><i className="fa fa-edit"></i> Edit</button>
-                <button className="btn btn-danger" onClick={handleDelete}><i className="fa fa-trash"></i> Delete</button>
-            </span>
+            <div className="ml-0 ml-md-auto d-flex">
+                <button className="btn btn-primary mr-2" onClick={handleEdit}><i className="fas fa-edit"></i></button>
+                <button className="btn btn-danger" onClick={handleDelete}><i className="fas fa-trash"></i></button>
+            </div>
         </li>
     )
 }

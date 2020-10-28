@@ -79,6 +79,22 @@ class App extends React.Component {
         }))
     }
 
+    componentDidMount() {
+        this.setState({
+            items: [
+                {
+                    "id": 1,
+                    "description": "Learn how to build PWA with React.js and parcel bundler",
+                },
+        
+                {
+                    "id": 2,
+                    "description": "Learn how to build Android app from PWA",
+                }
+            ]
+        })
+    }
+
     render() {
         return (
             <div className="container my-5 px-5">
